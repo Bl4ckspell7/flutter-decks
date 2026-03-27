@@ -38,7 +38,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   flutter_displaymode: ^0.7.0
   flutter_native_splash: ^2.4.5
-  drift: ^2.26.0
+  drift: ^2.32.1
   drift_flutter: ^0.3.0
   shared_preferences: ^2.5.3
 
