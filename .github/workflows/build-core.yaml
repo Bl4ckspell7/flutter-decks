@@ -12,11 +12,11 @@ jobs:
     strategy:
       matrix:
         include:
-          - os: ubuntu-22.04
+          - os: ubuntu-24.04
             build_linux: true
             build_apk: true
             build_appbundle: true
-          - os: macos-15
+          - os: macos-26
             build_ios: true
             build_macos: true
           - os: windows-latest
