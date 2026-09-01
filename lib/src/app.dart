@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 
 import 'package:dynamic_color/dynamic_color.dart' show DynamicColorBuilder;
-import 'package:flutter/material.dart' hide BottomNavigationBar;
+import 'package:material_ui/material_ui.dart' hide BottomNavigationBar;
 import 'package:flutter/services.dart' show PlatformException;
 import 'package:flutter_decks/src/presentation/bottom_navigation_bar.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
