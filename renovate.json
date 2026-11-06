@@ -1,0 +1,56 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", "docker:pinDigests"],
+  "enabledManagers": ["github-actions", "pub", "custom.regex"],
+  "minimumReleaseAge": "5 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 0,
+  "prHourlyLimit": 0,
+  "lockFileMaintenance": {
+    "description": "Refresh pubspec.lock (transitive dependencies) once a week, all of Monday (UTC). The preset default 'before 4am on monday' is never hit: the scheduled workflow runs in the afternoon and starts hours late.",
+    "enabled": true,
+    "schedule": ["* * * * 1"]
+  },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/renovate\\.yml$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)\\s*\\n\\s*renovate-version:\\s*(?<currentValue>[^\\s@]+)(@(?<currentDigest>sha256:[a-f0-9]+))?"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Digest updates once a week, all of Monday (UTC). The scheduled workflow starts hours late, so a narrow window was never hit.",
+      "matchUpdateTypes": ["digest"],
+      "schedule": ["* * * * 1"]
+    },
+    {
+      "description": "Renovate releases several times a day, so updating it opened a PR almost daily. Once a month, all of the 1st (UTC), as one PR.",
+      "matchPackageNames": [
+        "ghcr.io/renovatebot/renovate",
+        "renovatebot/github-action"
+      ],
+      "groupName": "renovate",
+      "schedule": ["* * 1 * *"]
+    },
+    {
+      "description": "Raise the ^ floors in pubspec.yaml along with pubspec.lock, as Dependabot did, so the declared minimum follows what is actually tested.",
+      "matchManagers": ["pub"],
+      "rangeStrategy": "bump"
+    },
+    {
+      "description": "Keep the caret on the Dart SDK constraint: its default versioning rewrites ^3.12.0 to an exact version, which fails pub get on any other SDK.",
+      "matchDatasources": ["dart-version"],
+      "versioning": "npm"
+    },
+    {
+      "description": "Only move the Dart SDK floor on a new minor; a patch release is no reason to raise it.",
+      "matchDatasources": ["dart-version"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": false
+    }
+  ]
+}
